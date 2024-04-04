@@ -7,6 +7,7 @@ export default function Home() {
   useEffect(() => {
    
    window.addEventListener("offline", (event) => {
+    event.preventDefault();
     // setIsOnline("/wifi-off.svg");
     const domget:any = imgref
     domget.current.src = "/wifi-off.svg"
@@ -14,6 +15,7 @@ export default function Home() {
   });
   
   window.addEventListener("online", (event) => {
+    event.preventDefault();
     // setIsOnline("/wifi-on.jpg");
     const domget:any = imgref
     domget.current.src = "/wifi-on.jpg"
