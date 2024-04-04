@@ -5,7 +5,7 @@ export default function Home() {
   // const [isOnline, setIsOnline] = useState('/wifi-on.jpg');
   const imgref = useRef(null);
   useEffect(() => {
-    const srcimg:any = document.getElementById('imgwifi');
+    const srcimg:any = imgref.current;
     console.log('addEventListener',srcimg.src);
 
    window.addEventListener("offline", (event) => {
