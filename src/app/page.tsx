@@ -15,6 +15,15 @@ export default function Home() {
     setIsOnline("/wifi-on.jpg");
     console.log("The network connection is present");
   });
+  
+  async function registerSync() {
+    console.log('registerSync');
+    
+    const swRegistration:any = await navigator.serviceWorker.ready;
+    swRegistration.sync.register("send-message");
+  }
+  
+  registerSync();
 
   },[])
   return (
