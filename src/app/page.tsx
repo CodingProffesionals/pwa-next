@@ -24,7 +24,7 @@ export default function Home() {
   },[])
   return (
     <>
-      <Image ref={imgref} id="imgwifi" src="/wifi-on.jpg" alt="" width="200" height="200"  />
+      <img ref={imgref} id="imgwifi" src="/wifi-on.jpg" alt="" width="200" height="200"  />
       <img src="img_la.jpg" alt="LA" style={{width:"100%"}} />
 
       <div className="w3-container w3-center w3-teal">
