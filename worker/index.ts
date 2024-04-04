@@ -1,11 +1,12 @@
-function sendMessage() {
+let formdatainprocess = "formdatainprocess";
+function sendMessage(formdatainprocess: any) {
     console.log('in the sendMessage function');
     fetch('https://jsonplaceholder.typicode.com/posts/1', {
         method: 'PUT',
         body: JSON.stringify({
             id: 1,
-            title: 'foo',
-            body: 'bar',
+            title: formdatainprocess?.title,
+            body: formdatainprocess?.body,
             userId: 1,
         }),
         headers: {
@@ -13,11 +14,19 @@ function sendMessage() {
         },
     })
         .then((response) => response.json())
-        .then((json) => console.log(json));
+        .then((json) => console.log('submitted', json));
 }
 self.addEventListener("sync", (event: any) => {
-    console.log('called sync',event);
+    // console.log('called sync', formdatainprocess);
     if (event.tag == "send-message") {
-        event.waitUntil(sendMessage());
+        event.waitUntil(sendMessage(formdatainprocess));
     }
+});
+self.addEventListener('message', event => {
+    // const formData = event.data;
+    // formdatainprocess = event.data
+    // console.log('formdatainprocess', event.data);
+
+    formdatainprocess = event.data
+    // Process the form data, e.g., save it to IndexedDB or send it to the server when network is available
 });
