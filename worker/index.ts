@@ -16,7 +16,7 @@ function sendMessage() {
         .then((json) => console.log(json));
 }
 self.addEventListener("sync", (event: any) => {
-    console.log('called sync');
+    console.log('called sync',event);
     if (event.tag == "send-message") {
         event.waitUntil(sendMessage());
     }
