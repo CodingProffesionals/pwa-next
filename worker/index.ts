@@ -18,6 +18,7 @@ function sendMessage(formdatainprocess: any) {
 }
 self.addEventListener("sync", (event: any) => {
     // console.log('called sync', formdatainprocess);
+    console.log('called sync');
     if (event.tag == "send-message") {
         event.waitUntil(sendMessage(formdatainprocess));
     }
