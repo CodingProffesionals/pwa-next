@@ -1,7 +1,8 @@
 let formdatainprocess = "formdatainprocess";
-function sendMessage(formdatainprocess: any) {
+async function sendMessage(formdatainprocess: any, event: any) {
     console.log('in the sendMessage function');
-    fetch('https://jsonplaceholder.typicode.com/posts/1', {
+    let dataSend: any = '';
+    await fetch('https://jsonplaceholder.typicode.com/posts/1', {
         method: 'PUT',
         body: JSON.stringify({
             id: 1,
@@ -14,20 +15,38 @@ function sendMessage(formdatainprocess: any) {
         },
     })
         .then((response) => response.json())
-        .then((json) => console.log('submitted', json));
+        .then((json) => {
+            dataSend = json;
+            console.log('submitted', json)
+        });
+
+    const dataToSend = dataSend;
+    const modself: any = self;
+    modself.clients.matchAll().then((clients: any) => {
+        clients.forEach((client: any) => {
+            client.postMessage(dataToSend);
+        });
+    });
+
 }
 self.addEventListener("sync", (event: any) => {
     // console.log('called sync', formdatainprocess);
-    console.log('called sync');
     if (event.tag == "send-message") {
-        event.waitUntil(sendMessage(formdatainprocess));
+        event.waitUntil(sendMessage(formdatainprocess, event));
     }
 });
-self.addEventListener('message', event => {
+self.addEventListener('message', (event: any) => {
     // const formData = event.data;
     // formdatainprocess = event.data
     // console.log('formdatainprocess', event.data);
+    formdatainprocess = event.data;
 
-    formdatainprocess = event.data
+    // const dataToSend = 'Hello this is our data to be used:::///';
+    // const modself: any = self;
+    // modself.clients.matchAll().then((clients:any) => {
+    //   clients.forEach((client:any) => {
+    //     client.postMessage(dataToSend);
+    //   });
+    // });
     // Process the form data, e.g., save it to IndexedDB or send it to the server when network is available
 });

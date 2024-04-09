@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from 'react';
 export default function Home() {
   const [isOnline, setIsOnline] = useState('/wifi-on.jpg');
+  const [data, setdata] = useState<any>('');
 
   useEffect(() => {
 
@@ -16,6 +17,12 @@ export default function Home() {
       console.log("The network connection is present");
     });
 
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      console.log('message in the main thread');
+      console.log(event.data);
+      setdata(event.data)
+    });
+
   }, [])
 
   async function registerSync() {
@@ -24,6 +31,8 @@ export default function Home() {
     const swRegistration: any = await navigator.serviceWorker.ready;
     swRegistration.sync.register("send-message");
   }
+
+
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -44,7 +53,7 @@ export default function Home() {
         <p>This is a paragraph.</p>
         <p>This is another paragraph.</p>
       </div>
-      <div className="w-full max-w-xs">
+      <div className="w-full flex gap-16">
         <form id="myForm" onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
@@ -60,7 +69,16 @@ export default function Home() {
           </div>
           <button type="submit" id="submitBtn" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
         </form>
+        {
+          data != '' ? <div className="mt-8">
+            <ul className="list-disc">
+              {data?.title && <li>Title: {data?.title}</li>}
+              {data?.body && <li>Body: {data?.body}</li>}
+            </ul>
+          </div> : <div className="mt-8">No data</div>
+        }
       </div>
+
     </>
   );
 }
